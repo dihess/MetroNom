@@ -1,35 +1,38 @@
 #include "LEDControl.h"
-#define BUZZZER_PIN  2
-LEDcontrol::LEDcontrol(byte led_pin) {
+
+LEDcontrol::LEDcontrol(uint8_t _led_pin, uint8_t _speaker_pin) {
     active = 0; // 0 = no program
     on_time = 0; // led on [ms]
     timestamp = millis();
-    pin = led_pin; // pin number
+    led_pin = _led_pin; // ESP32 pin number for LED
+    speaker_pin = _speaker_pin; // ESP32 pin number for speaker outpu
 
-    pinMode(pin, OUTPUT);
-    digitalWrite(pin, HIGH); // HIGH => LED off
+    pinMode(led_pin, OUTPUT);
+    digitalWrite(led_pin, HIGH); // HIGH => LED off
 }
 
 LEDcontrol::~LEDcontrol() {}
 
-void LEDcontrol::flash(unsigned short int led_on_time) {
-    on_time = led_on_time;
+void LEDcontrol::flash(unsigned short int _on_time, int _pitch) {
+    on_time = _on_time;
+    pitch = _pitch;
+
     timestamp = millis();
-    digitalWrite(pin, LOW); // LOW => LED on
-   tone(BUZZZER_PIN, 440);
-        
+    digitalWrite(led_pin, LOW); // LOW => LED on
+    tone(speaker_pin, pitch);
 
     active = 1;
+    return;
 }
 
 
 void LEDcontrol::on() {
-    digitalWrite(pin, LOW); // LOW => LED on
+    digitalWrite(led_pin, LOW); // LOW => LED on
     return;
 }
 
 void LEDcontrol::off() {
-    digitalWrite(pin, HIGH); // HIGH => LED off
+    digitalWrite(led_pin, HIGH); // HIGH => LED off
     return;
 }
 
@@ -43,8 +46,9 @@ void LEDcontrol::update() {
     currentMillis = millis();
     
     if ( currentMillis - timestamp >= on_time ) {
-        digitalWrite(pin, HIGH);
-        noTone(BUZZZER_PIN);
+        digitalWrite(led_pin, HIGH);
+        noTone(speaker_pin);
+
         active=0;
         return;
     }

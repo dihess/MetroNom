@@ -6,47 +6,33 @@
 // #include <String.h>
 // #include "intr_handling.h"
 
-
-int8_t ledPin_1 = 33;
-int8_t ledPin_2 = 32;
-int8_t ledPin_3 = 23;
-int8_t ledPin_4 = 22;
-
 unsigned int bpm = 250;
 unsigned long bpm_ms = (60.0/bpm)*1000; // BPM in ms umgerechnet
 
-LEDcontrol led1(ledPin_1);
-LEDcontrol led2(ledPin_2);
-LEDcontrol led3(ledPin_3);
-LEDcontrol led4(ledPin_4);
+LEDcontrol led1(ledPin_1, speaker_pin);
+LEDcontrol led2(ledPin_2, speaker_pin);
+LEDcontrol led3(ledPin_3, speaker_pin);
+LEDcontrol led4(ledPin_4, speaker_pin);
 
-#define BUZZZER_PIN  2 // ESP32 pin GPIO18 connected to piezo buzzer
-
-int melody[] = {
-  NOTE_C4, NOTE_G3, NOTE_G3, NOTE_A3, NOTE_G3, 0, NOTE_B3, NOTE_C4
-};
-
-int noteDurations[] = {
-  4, 8, 8, 4, 4, 4, 4, 4
-};
-int melody_1[] = {
-  NOTE_A4
-};
-
-int noteDurations_1[] = {
-  4
-};
 
 void setup() {
   Serial.begin(115200);
 
+  int melody[] = {
+    NOTE_C4, NOTE_G3, NOTE_G3, NOTE_A3, NOTE_G3, 0, NOTE_B3, NOTE_C4
+  };
+
+  int noteDurations[] = {
+    4, 8, 8, 4, 4, 4, 4, 4
+  };
+  
   for (int thisNote = 0; thisNote < 8; thisNote++) {
     int noteDuration = 1000 / noteDurations[thisNote];
-    tone(BUZZZER_PIN, melody[thisNote], noteDuration);
+    tone(speaker_pin, melody[thisNote], noteDuration);
 
     int pauseBetweenNotes = noteDuration * 1.30;
     delay(pauseBetweenNotes);
-    noTone(BUZZZER_PIN);
+    noTone(speaker_pin);
   }
 }
 
@@ -60,33 +46,23 @@ void loop() {
   led4.update();
 
   if (millis() - last_millis > bpm_ms ) {
-     int noteDuration = 1000 / noteDurations[0];
-
     switch (beat) {
       case 1:
-        led1.flash(50);
+        led1.flash(70, NOTE_A6);
         break;
       case 2:
-        led2.flash(20);
+        led2.flash(30, NOTE_A5);
         break;
       case 3:
-        led3.flash(20);
+        led3.flash(30, NOTE_A5);
         break;
       case 4:
-        led4.flash(20);   
+        led4.flash(30, NOTE_A5);   
         beat = 0; 
         break;
     }
-    beat++; // beat = beat + 1
 
-    // Serial.print("LED an");
-    // digitalWrite(ledPin, HIGH); 
-    // led1.on();
-    // delay(500);
-    
-    // Serial.println(" LED aus");
-    //digitalWrite(ledPin, LOW);
-    // led1.off();
+    beat++; // beat = beat + 1
     last_millis = millis();
   }
 }
