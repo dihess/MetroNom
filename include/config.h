@@ -1,5 +1,4 @@
 /* config.h */
-
 #pragma once
 #include <Arduino.h>
 
@@ -31,14 +30,13 @@ uint8_t ledPin_4 = 22;
 // Speaker pin
 uint8_t speaker_pin = 2; // ESP32 pin for audio output to speaker
 
-// Roatry encoders with MCP23017
-/* the INT pin of the MCP can only be connected to
- * an interrupt capable pin on the ESP32,
+// Rotary encoder pins
+/* The encoder pins can only be connected to
+ * interrupt capable pin on the ESP32
 */
-const short int arduinoIntPin = 25;
-// Assigment of encoder switch pins (directly connected to ESP32)
-const short int enc_0_sw_pin = 26; // needs bit 8 set to recognize directly connected button switch
-const short int enc_5_sw_pin = 27; // needs bit 8 set to recognize directly connected button switch
+uint8_t enc_pinA = 5;
+uint8_t enc_pinB = 18; 
+uint8_t enc_pinC = 19; 
 
 
 // WLAN

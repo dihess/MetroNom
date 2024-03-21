@@ -8,10 +8,13 @@
 #include <Adafruit_I2CDevice.h>
 #include <Wire.h>
 
-#include "config.h"
 #include "LEDcontrol.h"
-// #include "RotaryEncoderMCP.h"
+#include "RotaryEncoder.h"
 
+extern RotaryEncoder encoder;
+extern uint8_t enc_pinA;
+extern uint8_t enc_pinB; 
+extern uint8_t enc_pinC; 
 
 // OLED displays
 // extern Adafruit_SSD1306 display[];

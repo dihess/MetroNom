@@ -9,28 +9,25 @@
 // Anti-clockwise step.
 #define DIR_CCW 0x20
 
-class RotaryEncoderMCP {
+class RotaryEncoder {
 
     private:
-        Adafruit_MCP23X17* mcp;
-        byte pinA;
-        byte pinB;
-        byte pinC;
+        uint8_t pinA;
+        uint8_t pinB;
+        uint8_t pinC;
         bool dir;
-        byte id;
 
         unsigned char state;
         short int ticks = 0;
         bool button_pressed = false;        
 
     public:
-        RotaryEncoderMCP(Adafruit_MCP23X17* _mcp, byte _pinA, byte _pinB, bool _dir, byte _id);
-        RotaryEncoderMCP(Adafruit_MCP23X17* _mcp, byte _pinA, byte _pinB, byte _pinC, bool _dir, byte _id);
-        ~RotaryEncoderMCP();
+        RotaryEncoder(uint8_t _pinA, uint8_t _pinB, bool _dir);
+        RotaryEncoder(uint8_t _pinA, uint8_t _pinB, uint8_t _pinC, bool _dir);
+        ~RotaryEncoder();
  
         bool init(void);
-        bool feedEvents(byte _pin, unsigned short int _states);
-        void feedExternalSwitchEvent(void);
+        bool feedEvents();
         bool isChanged(void);
         short int getTicks(void);
         bool isPressed(void);

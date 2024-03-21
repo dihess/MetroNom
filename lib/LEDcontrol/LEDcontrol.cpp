@@ -25,7 +25,6 @@ void LEDcontrol::flash(unsigned short int _on_time, int _pitch) {
     return;
 }
 
-
 void LEDcontrol::on() {
     digitalWrite(led_pin, LOW); // LOW => LED on
     return;
